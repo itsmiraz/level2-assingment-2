@@ -24,4 +24,4 @@ type TUser = {
   orders: TOrder[];
 };
 
-export default TUser;
+export { TOrder, TUser };
