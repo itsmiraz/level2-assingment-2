@@ -25,9 +25,14 @@ const getSingleUser = async (userId: number) => {
   return user;
 };
 
-const UpdateUser = async (userId: string, userData) => {
-  const data = '';
-  return data;
+const UpdateUser = async (userId: number, userData: object) => {
+  const result = await User.findOneAndUpdate(
+    { userId },
+    { $set: userData },
+    { new: true },
+  );
+
+  return result;
 };
 
 export const UserServices = {

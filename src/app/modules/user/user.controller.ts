@@ -4,6 +4,7 @@ import {
   userValidationSchema,
 } from './user.validation';
 import { UserServices } from './user.servicee';
+import { User } from './user.model';
 // import { createUserToDb } from './user.servicee';
 
 const createUser = async (req: Request, res: Response) => {
@@ -89,7 +90,23 @@ const updateUser = async (req: Request, res: Response) => {
     //Check the updated data
     const newzodValidatedData = updateUserValidationSchema.parse(updatedData);
 
-    const result = await UserServices.UpdateUser(userId, newzodValidatedData);
+    const user = User.isUserExists(parseFloat(userId));
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    const result = await UserServices.UpdateUser(
+      parseFloat(userId),
+      newzodValidatedData,
+    );
 
     res.status(200).json({
       success: true,
