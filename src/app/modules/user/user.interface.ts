@@ -21,7 +21,7 @@ type TUser = {
     city: string;
     country: string;
   };
-  orders: TOrder[];
+  // orders: TOrder[];
 };
 
 export { TOrder, TUser };
