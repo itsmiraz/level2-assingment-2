@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcryptjs';
 import config from '../../config';
 
@@ -18,11 +18,11 @@ import config from '../../config';
 //   },
 // });
 
-const UserSchema = new Schema<TUser>({
+const UserSchema = new Schema<TUser, UserModel>({
   userId: {
     type: Number,
+    unique: true,
     required: true,
-    uniqe: true,
   },
   username: {
     type: String,
@@ -48,9 +48,8 @@ const UserSchema = new Schema<TUser>({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
-    uniqe: true,
-
   },
   isActive: {
     type: Boolean,
@@ -92,10 +91,17 @@ UserSchema.pre('save', async function (next) {
 UserSchema.post('save', function (doc, next) {
   next();
 });
+
+UserSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await User.findOne({ userId });
+
+  return existingUser;
+};
+
 UserSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
   return userObject;
 };
 
-export const User = model<TUser>('User', UserSchema);
+export const User = model<TUser, UserModel>('User', UserSchema);
