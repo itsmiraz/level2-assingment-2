@@ -44,4 +44,37 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-export { createUser, getAllUsers };
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const user = await UserServices.getSingleUser(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: user,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
+export { createUser, getAllUsers, getSingleUser };
