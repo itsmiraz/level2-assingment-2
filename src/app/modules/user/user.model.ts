@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TOrder, TUser } from './user.interface';
+import bcrypt from 'bcryptjs';
+import config from '../../config';
 
 const OrderSchema = new Schema<TOrder>({
   productName: {
@@ -72,6 +74,25 @@ const UserSchema = new Schema<TUser>({
   },
 });
 
-// UserSchema.pre("POST")
+UserSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+
+  next();
+});
+
+UserSchema.post('save', function (doc, next) {
+  next();
+});
+UserSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+  delete userObject.password;
+  return userObject;
+};
 
 export const User = model<TUser>('User', UserSchema);
