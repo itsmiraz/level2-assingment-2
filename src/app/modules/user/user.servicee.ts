@@ -20,7 +20,7 @@ const getAllUsers = async () => {
 };
 
 const getSingleUser = async (userId: number) => {
-  const user = User.isUserExists(userId);
+  const user = await User.isUserExists(userId);
 
   return user;
 };
@@ -35,9 +35,16 @@ const UpdateUser = async (userId: number, userData: object) => {
   return result;
 };
 
+const deleteUser = async (userId: number) => {
+  const result = await User.findOneAndDelete({ userId });
+
+  return result;
+};
+
 export const UserServices = {
   createUserToDb,
   getAllUsers,
   getSingleUser,
   UpdateUser,
+  deleteUser,
 };

@@ -90,7 +90,7 @@ const updateUser = async (req: Request, res: Response) => {
     //Check the updated data
     const newzodValidatedData = updateUserValidationSchema.parse(updatedData);
 
-    const user = User.isUserExists(parseFloat(userId));
+    const user = await User.isUserExists(parseFloat(userId));
 
     if (!user) {
       return res.status(404).json({
@@ -124,4 +124,37 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export { createUser, getAllUsers, getSingleUser, updateUser };
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.isUserExists(parseFloat(userId));
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    await UserServices.deleteUser(parseFloat(userId));
+
+    res.status(400).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
+export { createUser, getAllUsers, getSingleUser, updateUser, deleteUser };
