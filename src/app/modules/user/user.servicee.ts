@@ -19,10 +19,20 @@ const getAllUsers = async () => {
   return result;
 };
 
-const getSingleUser = async (userId: string) => {
-  const user = await User.findOne({ userId });
+const getSingleUser = async (userId: number) => {
+  const user = User.isUserExists(userId);
 
   return user;
 };
 
-export const UserServices = { createUserToDb, getAllUsers, getSingleUser };
+const UpdateUser = async (userId: string, userData) => {
+  const data = '';
+  return data;
+};
+
+export const UserServices = {
+  createUserToDb,
+  getAllUsers,
+  getSingleUser,
+  UpdateUser,
+};

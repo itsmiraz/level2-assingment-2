@@ -29,4 +29,15 @@ const userValidationSchema = z.object({
   address: addressValidationSchama,
   // orders: z.array(orderSchema).nullable(),
 });
-export default userValidationSchema;
+
+const updateUserValidationSchema = z.object({
+  username: z.string().nonempty({ message: 'Username is required' }),
+  fullName: userNameValidationSchema,
+  email: z.string().nonempty({ message: 'Email is required' }),
+  isActive: z.boolean(),
+  age: z.number(),
+  hobbies: z.array(z.string()),
+  address: addressValidationSchama,
+});
+
+export { userValidationSchema, updateUserValidationSchema };

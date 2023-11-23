@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import userValidationSchema from './user.validation';
+import {
+  updateUserValidationSchema,
+  userValidationSchema,
+} from './user.validation';
 import { UserServices } from './user.servicee';
 // import { createUserToDb } from './user.servicee';
 
@@ -48,7 +51,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    const user = await UserServices.getSingleUser(userId);
+    const user = await UserServices.getSingleUser(parseFloat(userId));
 
     if (!user) {
       return res.status(404).json({
@@ -77,4 +80,31 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-export { createUser, getAllUsers, getSingleUser };
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const updatedData = req.body;
+
+    //Check the updated data
+    const newzodValidatedData = updateUserValidationSchema.parse(updatedData);
+
+    const result = await UserServices.UpdateUser(userId, newzodValidatedData);
+
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully!',
+      data: result,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
+export { createUser, getAllUsers, getSingleUser, updateUser };
