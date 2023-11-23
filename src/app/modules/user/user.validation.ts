@@ -22,6 +22,8 @@ const userValidationSchema = z.object({
   username: z.string().min(1).max(255),
   password: z.string().min(6).max(20),
   fullName: userNameValidationSchema,
+  email: z.string(),
+  isActive: z.boolean(),
   age: z.number(),
   hobbies: z.array(z.string()),
   address: addressValidationSchama,

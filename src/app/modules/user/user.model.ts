@@ -44,6 +44,14 @@ const UserSchema = new Schema<TUser>({
     type: Number,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
+  isActive: {
+    type: Boolean,
+    required: true,
+  },
   hobbies: [{ type: String, required: true }],
   address: {
     street: {
@@ -63,5 +71,7 @@ const UserSchema = new Schema<TUser>({
     type: [OrderSchema],
   },
 });
+
+// UserSchema.pre("POST")
 
 export const User = model<TUser>('User', UserSchema);
