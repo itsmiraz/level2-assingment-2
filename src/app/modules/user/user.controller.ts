@@ -195,6 +195,37 @@ const addOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    if (!(await User.isUserExists(parseFloat(userId)))) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    const result = await UserServices.getOrders(parseFloat(userId));
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
 export {
   createUser,
   getAllUsers,
@@ -202,4 +233,5 @@ export {
   updateUser,
   deleteUser,
   addOrders,
+  getOrders,
 };

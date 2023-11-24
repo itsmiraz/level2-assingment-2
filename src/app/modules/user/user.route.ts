@@ -4,6 +4,7 @@ import {
   createUser,
   deleteUser,
   getAllUsers,
+  getOrders,
   getSingleUser,
   updateUser,
 } from './user.controller';
@@ -16,5 +17,6 @@ router.get('/:userId', getSingleUser);
 router.put('/:userId', updateUser);
 router.delete('/:userId', deleteUser);
 router.put('/:userId/orders', addOrders);
+router.get('/:userId/orders', getOrders);
 
 export const UserRoutes = router;
