@@ -6,6 +6,7 @@ import {
   getAllUsers,
   getOrders,
   getSingleUser,
+  getTotalPrice,
   updateUser,
 } from './user.controller';
 
@@ -18,5 +19,6 @@ router.put('/:userId', updateUser);
 router.delete('/:userId', deleteUser);
 router.put('/:userId/orders', addOrders);
 router.get('/:userId/orders', getOrders);
+router.get('/:userId/orders/total-price', getTotalPrice);
 
 export const UserRoutes = router;

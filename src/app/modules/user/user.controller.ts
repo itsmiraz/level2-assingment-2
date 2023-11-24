@@ -226,6 +226,39 @@ const getOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.isUserExists(parseFloat(userId));
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    const result = await UserServices.getTotalPrice(parseFloat(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: result,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
 export {
   createUser,
   getAllUsers,
@@ -234,4 +267,5 @@ export {
   deleteUser,
   addOrders,
   getOrders,
+  getTotalPrice,
 };
