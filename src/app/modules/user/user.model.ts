@@ -1,22 +1,22 @@
 import { Schema, model } from 'mongoose';
-import { TUser, UserModel } from './user.interface';
+import { TOrder, TUser, UserModel } from './user.interface';
 import bcrypt from 'bcryptjs';
 import config from '../../config';
 
-// const OrderSchema = new Schema<TOrder>({
-//   productName: {
-//     type: String,
-//     required: true,
-//   },
-//   price: {
-//     type: Number,
-//     required: true,
-//   },
-//   quantity: {
-//     type: Number,
-//     required: true,
-//   },
-// });
+const OrderSchema = new Schema<TOrder>({
+  productName: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
 
 const UserSchema = new Schema<TUser, UserModel>({
   userId: {
@@ -70,10 +70,10 @@ const UserSchema = new Schema<TUser, UserModel>({
       required: true,
     },
   },
-  // orders: {
-  //   type: [OrderSchema],
-  //   required: false,
-  // },
+  orders: {
+    type: [OrderSchema],
+    required: false,
+  },
 });
 
 UserSchema.pre('save', async function (next) {

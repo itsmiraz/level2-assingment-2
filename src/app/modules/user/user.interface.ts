@@ -23,7 +23,7 @@ type TUser = {
     city: string;
     country: string;
   };
-  // orders: TOrder[];
+  orders?: TOrder[] | null;
 };
 
 export interface UserModel extends Model<TUser> {

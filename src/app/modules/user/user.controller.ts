@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  orderSchema,
   updateUserValidationSchema,
   userValidationSchema,
 } from './user.validation';
@@ -157,4 +158,48 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { createUser, getAllUsers, getSingleUser, updateUser, deleteUser };
+const addOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.isUserExists(parseFloat(userId));
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    const order = req.body;
+
+    const validatedOrderData = orderSchema.parse(order);
+
+    await UserServices.addOrder(parseFloat(userId), validatedOrderData);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      data: err,
+    });
+  }
+};
+
+export {
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
+  addOrders,
+};

@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  addOrders,
   createUser,
   deleteUser,
   getAllUsers,
@@ -14,5 +15,6 @@ router.get('/', getAllUsers);
 router.get('/:userId', getSingleUser);
 router.put('/:userId', updateUser);
 router.delete('/:userId', deleteUser);
+router.put('/:userId/orders', addOrders);
 
 export const UserRoutes = router;
