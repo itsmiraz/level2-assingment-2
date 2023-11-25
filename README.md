@@ -33,13 +33,9 @@ npm run build
 npm run start:prod
 ```
 
-### Project Structure
-
 ## For Testing with Postman
 
-#### Deployment Link
-
-#### Base Url
+#### Base URL
 
 ```
 https://assingment-2-roan.vercel.app/api
